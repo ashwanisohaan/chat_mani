@@ -2,8 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whatsapp_design/core/shared//app_constants.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+
+   String? mobile;
+
+   HomePage({super.key, required this.mobile});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late String mobielNo;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    mobielNo = widget.mobile ?? "+91";
+  }
+
 
   @override
   Widget build(BuildContext context) {

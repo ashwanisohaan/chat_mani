@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
+import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
+    //  backgroundColor: Colors.deepPurple,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -39,17 +40,18 @@ class _WelcomePageState extends State<WelcomePage> {
                   child: Image.asset('assets/images/welcome.webp'),
                 ),
               ),
-              Text(wl, style: mTextStyle35()),
-              Text(wl2, style: mTextStyle15()),
+              Text(wl, style: mTextStyle35().copyWith(color: Colors.black87)),
+              SizedBox(height: 20,),
+              Text(wl2, style: mTextStyle15().copyWith(color: Colors.black87),textAlign: TextAlign.center,),
               const SizedBox(height: 20),
 
-              Theme(
+              /*Theme(
                 data: Theme.of(context).copyWith(
                   canvasColor: Colors.black, // 👈 Background color of dropdown popup
                 ),
                 child: DropdownButton<String>(
                   value: selectedLanguage,
-                  hint: Text('Choose a language', style: mTextStyle15()),
+                  hint: Text('Choose a language', ),
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedLanguage = newValue;
@@ -58,19 +60,19 @@ class _WelcomePageState extends State<WelcomePage> {
                   items: languages.map((String lang) {
                     return DropdownMenuItem<String>(
                       value: lang,
-                      child: Text(lang,style: mTextStyle15(),),
+                      child: Text(lang),
                     );
                   }).toList(),
                 ),
-              ),
+              ),*/
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: selectedLanguage != null
-                    ? () {
-                  context.go('/signup'); // 👈 Go to your next page
+                onPressed:
+                    () {
+                  context.go(AppRoutes.SIGNUP); // 👈 Go to your next page
                 }
-                    : null, // 👈 Disables button when null
-                child: const Text('Agree and Continue'),
+                    ,
+                child:  Text('Agree and Continue',style: mTextStyle20().copyWith(color: Colors.black54),),
               ),
             ],
           ),

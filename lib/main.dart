@@ -3,15 +3,16 @@ import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'core/firebase_operations/firebase_options.dart';
 
 // import 'features/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    //options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
@@ -25,7 +26,6 @@ class MyApp extends StatelessWidget {
       routerConfig: appGoRouterConfig,
       title: SPL,
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       //home: HomePage(),
@@ -40,7 +40,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
-      context.go('/home');
+      context.go(AppRoutes.WELCOME);
     });
     return Scaffold(body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
     children: [
