@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whatsapp_design/core/constant/app_constants.dart';
+import 'package:whatsapp_design/core/shared//app_constants.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title:  Text(SPL,style: mTextStyle20(),),
           backgroundColor: Colors.deepPurple,
-          bottom:  TabBar(
+         /* bottom:  TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.grey,
             tabs: [
@@ -21,9 +21,10 @@ class HomePage extends StatelessWidget {
               Tab(text: 'STATUS'),
               Tab(text: 'CALLS'),
             ],
-          ),
+          ),*/
         ),
-        body: TabBarView(
+        body:
+        TabBarView(
           children: [
             ChatTab(),
             //Center(child: Text('Chat List')),
@@ -34,6 +35,7 @@ class HomePage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
           onPressed: () {
+
             // Add new chat or status
           },
           child: const Icon(Icons.chat, color: Colors.white),
@@ -102,95 +104,81 @@ class ChatTab extends StatelessWidget {
 
 
 
-/*import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // for time formatting
+/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class HomeScreen extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final List<Map<String, String>> users = [];
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController messageController = TextEditingController();
-  final TextEditingController imageController = TextEditingController();
+  void _sendMessage() async {
+    if (_messageController.text.trim().isEmpty) return;
 
-  void addUser() {
-    final name = nameController.text;
-    final message = messageController.text;
-    final image = imageController.text;
-    final time = DateFormat('hh:mm a').format(DateTime.now()); // current time
+    await _firestore.collection('messages').add({
+      'text': _messageController.text,
+      'timestamp': FieldValue.serverTimestamp(),
+      'sender': 'User1', // Replace with Firebase Auth later if needed
+    });
 
-    if (name.isNotEmpty && message.isNotEmpty && image.isNotEmpty) {
-      setState(() {
-        users.add({
-          'name': name,
-          'message': message,
-          'time': time,
-          'image': image,
-        });
-        nameController.clear();
-        messageController.clear();
-        imageController.clear();
-      });
-    }
+    _messageController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Chat User'),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+      appBar: AppBar(title: Text("Chat")),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('messages')
+                  .orderBy('timestamp', descending: false)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+
+                final messages = snapshot.data!.docs;
+
+                return ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final msg = messages[index];
+                    return ListTile(
+                      title: Text(msg['text']),
+                      subtitle: Text(msg['sender']),
+                    );
+                  },
+                );
+              },
             ),
-            TextField(
-              controller: messageController,
-              decoration: const InputDecoration(labelText: 'Message'),
+          ),
+          Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(hintText: "Enter message"),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendMessage,
+                )
+              ],
             ),
-            TextField(
-              controller: imageController,
-              decoration: const InputDecoration(labelText: 'Image Path (e.g. assets/user1.png)'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: addUser,
-              child: const Text('Add Chat'),
-            ),
-            const Divider(height: 20),
-            const Text('User Chat List', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  final user = users[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(user['image']!),
-                      radius: 25,
-                    ),
-                    title: Text(user['name']!),
-                    subtitle: Text(user['message']!),
-                    trailing: Text(user['time']!),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-}*/
+}
+*/

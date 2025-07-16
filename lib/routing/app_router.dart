@@ -13,7 +13,7 @@ abstract class AppRoutes {
   static const CHAT = '/chat';
   static const SIGNUP = '/signup';
   static const HOME = '/home';
-  static const CREATE = '/create';
+
 }
 
 // GoRouter configuration
@@ -22,7 +22,7 @@ final appGoRouterConfig = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.SPLASH,
-      builder: (context, state) =>  Splash(),
+      builder: (context, state) =>  SplashScreen(),
     ),
     GoRoute(
       path: AppRoutes.WELCOME,
@@ -40,6 +40,7 @@ final appGoRouterConfig = GoRouter(
       path: AppRoutes.CHAT,
       builder: (context, state) =>  ChatPage(),
     ),
+
 
     // GoRoute(
     //   path: '${AppRoutes.screenTaskListing}/:uniqueId',

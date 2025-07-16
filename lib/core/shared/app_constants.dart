@@ -1,5 +1,10 @@
 
-
+class constants{
+  static  String appKey='';
+  static  String appId='';
+  static  String messagesenderId='';
+  static  String projectId='';
+}
 // splas page
 const SPL = "Chat Mani";
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whatsapp_design/core/constant/app_constants.dart';
+import 'package:whatsapp_design/core/shared/app_constants.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 class SignUpPage extends StatelessWidget {
    SignUpPage({super.key});
@@ -90,6 +90,7 @@ class SignUpPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: phController != null
                       ? () {
+
                     context.go('/home'); // 👈 Go to your next page
                   }
                       : null, // 👈 Disables button when null

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1088671119928",
+    "project_id": "chat-mani",
+    "storage_bucket": "chat-mani.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088671119928:android:9f98f5e92bddeef69644cd",
+        "android_client_info": {
+          "package_name": "mani.whts.whatsapp_design"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9qcDvI8fn8MSI03FcjYX5L_9XQFjnMCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

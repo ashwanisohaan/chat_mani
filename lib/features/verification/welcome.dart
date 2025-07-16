@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whatsapp_design/core/constant/app_constants.dart';
+import 'package:whatsapp_design/core/shared/app_constants.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 
 class WelcomePage extends StatefulWidget {
