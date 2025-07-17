@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whatsapp_design/features/home/home.dart';
 import 'package:whatsapp_design/features/verification/welcome.dart';
 import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
@@ -6,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'core/firebase_operations/firebase_options.dart';
+import 'features/provider/auth_provider.dart';
 
 // import 'features/home/home.dart';
 
@@ -14,8 +18,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
-}
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+        child: MyApp(),
+      ),);}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -33,103 +40,89 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-class SplashScreen extends StatelessWidget {
+
+
+
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
-
-
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2), () {
-      context.go(AppRoutes.WELCOME);
-    });
-    return Scaffold(body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(SPL,style: TextStyle(color: Colors.deepPurple, fontSize: 40),),
-      Image.asset('assets/images/splash_cht.png'),
-    ],
-    ),
-    ),
-    );
-  }
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
 
+  Future<void> _checkLoginStatus() async {
+    await Future.delayed(Duration(seconds: 2)); // splash delay
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final phoneNumber = prefs.getString('phoneNumber');
 
-
-
-/*
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      context.go(AppRoutes.HOME); // If number exists → go to Home
+    } else {
+      context.go(AppRoutes.SIGNUP); // Else → go to Signup/Login
     }
-}
-
-}
   }
-    ),),);
-      ],
-        Text(SPL,style: TextStyle(color: Colors.white, fontSize: 40),)
-        Image.asset('assets/images/splash_cht.png'),
-      children: [
-      mainAxisAlignment: MainAxisAlignment.center,
-      body: Center(child: Column(
-      backgroundColor: Colors.deepPurple,
-    return  Scaffold(
-    goNext(context);
-  Widget build(BuildContext context) {
+
   @override
-
-
-
-  }
-    });
-
-      context.go('/home');
-    Future.delayed(const Duration(seconds: 3),() {
-  void goNext(BuildContext context){
-
-  const Splash({super.key});
-class Splash extends StatelessWidget {
-}
-  }
-
-   );
-    title: 'ManiChatApp',
-      routerConfig: appGoRouterConfig,
-      debugShowCheckedModeBanner: false,
-    return MaterialApp.router(
   Widget build(BuildContext context) {
-  @override
-  // This widget is the root of your application.
-
-  const MyApp({super.key});
-class MyApp extends StatelessWidget {
-
-}
-  runApp(const MyApp());
-
-    await Firebase.initializeApp(); // for Android/iOS
-
-  } else {
-    );
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(SPL, style: TextStyle(color: Colors.deepPurple, fontSize: 40)),
+            Image.asset('assets/images/splash_cht.png'),
+          ],
+        ),
       ),
-        appId: "YOUR_APP_ID",
-        messagingSenderId: "YOUR_SENDER_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        projectId: "YOUR_PROJECT_ID",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        apiKey: "YOUR_API_KEY",
-      options: FirebaseOptions(
-   await Firebase.initializeApp(
+    );
+  }
+}
 
-  //if (kIsWeb) {
-  WidgetsFlutterBinding.ensureInitialized();
-void main() async{
 
-import 'package:whatsapp_design/routing/app_router.dart';
-import 'package:whatsapp_design/core/shared/app_constants.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-    */
+
+/*class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        if (auth.isLoading) {
+          return Scaffold(body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(SPL,style: TextStyle(color: Colors.deepPurple, fontSize: 40),),
+              Image.asset('assets/images/splash_cht.png'),
+            ],
+          ),
+          ),
+          );
+        } else {
+          Future.microtask(() {
+            if (auth.isLoggedIn) {
+              context.pushReplacement(AppRoutes.HOME);
+
+            } else {
+              context.pushReplacement(AppRoutes.SIGNUP);
+
+            }
+          });
+
+          // While waiting for Future.microtask to complete
+          return Scaffold(
+            body: Center(child: Text("Checking login status...")),
+          );
+        }
+      },
+    );
+  }
+}
+
+*/
+

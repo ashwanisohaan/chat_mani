@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatsapp_design/core/firebase_operations/firebase_services.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
 import 'package:whatsapp_design/routing/app_router.dart';
@@ -15,18 +16,20 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController phController = TextEditingController();
-   var loading  = false;
+  var loading = false;
 
-   void setLoading(bool loadState){
-     setState(() {
-       loading = loadState;
-     });
-   }
+  void setLoading(bool loadState) {
+    setState(() {
+      loading = loadState;
+    });
+  }
 
+  final List<String> Countries = ['India'];
 
-  final List<String> Countries = [
-    'India'
-  ];
+  Future<void> saveMobileNumber(String mob) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('mobile_number', mob);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +49,10 @@ class _SignUpPageState extends State<SignUpPage> {
               Text(sgn2, style: mTextStyle15()),
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
-                  return  Theme(
+                  return Theme(
                     data: Theme.of(context).copyWith(
                       canvasColor:
-                          Colors.black, // 👈 Background color of dropdown popup
+                      Colors.black, // 👈 Background color of dropdown popup
                     ),
                     child: DropdownButton<String>(
                       value: selectCountry,
@@ -96,12 +99,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       isError: true,
                     );
                   } else {
-                    setLoading(true);
+                   setLoading(true);
                     bool isSaved = await FirestoreServices()
                         .saveUserIfNotExists(mobileNumber: mob);
 
                     setLoading(true);
                     if (isSaved) {
+                      await saveMobileNumber(mob); // <-- Save to SharedPreferences
+
                       // Todo: Save mobile number in the preference
 
                       "Login Successfully!".showAppSnackBar(context);
@@ -112,7 +117,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   }
                 },
-                child: loading ? CircularProgressIndicator() :Text(
+                child: loading
+                    ? CircularProgressIndicator()
+                    : Text(
                   'Proceed to login',
                   style: mTextStyle20().copyWith(color: Colors.black),
                 ),
@@ -124,3 +131,4 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
+

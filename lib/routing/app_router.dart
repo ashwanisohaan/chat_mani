@@ -4,6 +4,7 @@ import "package:whatsapp_design/features/verification/sign_up.dart";
 import "package:whatsapp_design/features/verification/welcome.dart";
 
 import "../features/home/chat.dart";
+import "../features/home/rigstered_data.dart";
 import "../main.dart";
 
 abstract class AppRoutes {
@@ -12,6 +13,7 @@ abstract class AppRoutes {
   static const CHAT = '/chat';
   static const SIGNUP = '/signup';
   static const HOME = '/home';
+  static const LIST = '/list';
 }
 
 // GoRouter configuration
@@ -37,6 +39,7 @@ final appGoRouterConfig = GoRouter(
       },
     ),
     GoRoute(path: AppRoutes.CHAT, builder: (context, state) => ChatPage()),
+    GoRoute(path: AppRoutes.LIST, builder: (context, state) => RegisteredUserPage()),
 
     // GoRoute(
     //   path: '${AppRoutes.screenTaskListing}/:uniqueId',

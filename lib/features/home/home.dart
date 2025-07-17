@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whatsapp_design/core/shared//app_constants.dart';
+import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 class HomePage extends StatefulWidget {
 
@@ -15,12 +16,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late String mobielNo;
 
-  @override
+ /*@override
   void initState() {
     // TODO: implement initState
     super.initState();
     mobielNo = widget.mobile ?? "+91";
-  }
+  }*/
 
 
   @override
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
           onPressed: () {
+            context.go(AppRoutes.LIST);
 
             // Add new chat or status
           },
