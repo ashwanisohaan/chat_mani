@@ -1,7 +1,7 @@
 import "package:go_router/go_router.dart";
+import "package:whatsapp_design/features/authlogin/sign_up.dart";
+import "package:whatsapp_design/features/authlogin/welcome.dart";
 import "package:whatsapp_design/features/home/home.dart";
-import "package:whatsapp_design/features/verification/sign_up.dart";
-import "package:whatsapp_design/features/verification/welcome.dart";
 
 import "../features/home/chat.dart";
 import "../features/home/rigstered_data.dart";
@@ -32,14 +32,24 @@ final appGoRouterConfig = GoRouter(
     GoRoute(
       path: AppRoutes.HOME,
       builder: (context, state) {
-          // final mobileNo = state.pathParameters['mobNumber']!;
-        final mobileNo = state.extra as String?;
+        // final mobileNo = state.pathParameters['mobNumber']!;
+        // final mobileNo = state.extra as String?;
 
-       return HomePage(mobile: mobileNo);
+        return HomePage();
       },
     ),
-    GoRoute(path: AppRoutes.CHAT, builder: (context, state) => ChatPage()),
-    GoRoute(path: AppRoutes.LIST, builder: (context, state) => RegisteredUserPage()),
+    GoRoute(
+      path: AppRoutes.CHAT,
+      builder: (context, state) {
+      //  final mobileNo = state.extra as Map<String, dynamic>;
+      //  return ChatPage(mobile: mobileNo['mobile']);
+        return ChatPage();
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.LIST,
+      builder: (context, state) => RegisteredUserPage(),
+    ),
 
     // GoRoute(
     //   path: '${AppRoutes.screenTaskListing}/:uniqueId',

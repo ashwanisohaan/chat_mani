@@ -1,47 +1,50 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:whatsapp_design/features/home/home.dart';
-import 'package:whatsapp_design/features/verification/welcome.dart';
-import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:whatsapp_design/routing/app_router.dart';
 
 import 'core/firebase_operations/firebase_options.dart';
-import 'features/provider/auth_provider.dart';
+import 'core/provider/auth_provider.dart';
 
 // import 'features/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final prefs = await SharedPreferences.getInstance();
+
   runApp(
-      ChangeNotifierProvider(
-        create: (_) => AuthProvider(),
-        child: MyApp(),
-      ),);}
+    MultiProvider(
+      providers: [
+        Provider<SharedPreferences>.value(value: prefs),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp.router(
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: appGoRouterConfig,
       title: SPL,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      //home: HomePage(),
 
+      //home: HomePage(),
     );
   }
 }
-
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -60,13 +63,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkLoginStatus() async {
     await Future.delayed(Duration(seconds: 2)); // splash delay
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final phoneNumber = prefs.getString('phoneNumber');
+    final auth = await Provider.of<AuthProvider>(context, listen: false);
+    bool isLoggedIn = await auth.isLoggedIn;
 
-    if (phoneNumber != null && phoneNumber.isNotEmpty) {
-      context.go(AppRoutes.HOME); // If number exists → go to Home
+    if (isLoggedIn) {
+      context.go(AppRoutes.HOME);
     } else {
-      context.go(AppRoutes.SIGNUP); // Else → go to Signup/Login
+      context.go(AppRoutes.SIGNUP);
     }
   }
 
@@ -85,9 +88,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-
-
 
 /*class SplashScreen extends StatelessWidget {
   @override
@@ -125,4 +125,3 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 */
-

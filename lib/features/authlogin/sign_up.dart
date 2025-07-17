@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:whatsapp_design/core/firebase_operations/firebase_services.dart';
+import 'package:whatsapp_design/core/provider/preferences/provider_shared_pref.dart';
 import 'package:whatsapp_design/core/shared/app_constants.dart';
 import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 import 'package:whatsapp_design/shared/utility.dart';
+
+import '../../core/provider/auth_provider.dart';
+import '../../core/provider/preferences/preference_constants.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({super.key});
@@ -27,8 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final List<String> Countries = ['India'];
 
   Future<void> saveMobileNumber(String mob) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('mobile_number', mob);
+   await prefInstance(context).setString(MOBILENO, mob);
   }
 
   @override
@@ -103,15 +106,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     bool isSaved = await FirestoreServices()
                         .saveUserIfNotExists(mobileNumber: mob);
 
-                    setLoading(true);
+                    setLoading(false);
                     if (isSaved) {
                       await saveMobileNumber(mob); // <-- Save to SharedPreferences
 
-                      // Todo: Save mobile number in the preference
-
                       "Login Successfully!".showAppSnackBar(context);
-                      context.pushReplacement(AppRoutes.HOME,);
-                      context.push(AppRoutes.HOME, extra: mob);
+
+                      await Provider.of<AuthProvider>(context,listen: false).login();
+                      context.pushReplacement(AppRoutes.HOME);
                     } else {
                       "Login failed!".showAppSnackBar(context, isError: true);
                     }

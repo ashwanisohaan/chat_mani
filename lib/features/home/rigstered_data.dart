@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
+import 'package:whatsapp_design/core/firebase_operations/firebase_services.dart';
+import 'package:whatsapp_design/routing/app_router.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
 
 class RegisteredUserPage extends StatefulWidget {
@@ -10,48 +13,54 @@ class RegisteredUserPage extends StatefulWidget {
 }
 
 class _RegisteredUserPageState extends State<RegisteredUserPage> {
-  List<String> users = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadRegisteredUser();
-  }
-
-  Future<void> loadRegisteredUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? mob = prefs.getString('mobile_number');
-    if (mob != null) {
-      setState(() {
-        users = [mob]; // Later you can add multiple users here
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Registered User",style: mTextStyle20(),),
+        title: Text("Registered User", style: mTextStyle15()),
         backgroundColor: Colors.deepPurple,
       ),
-      body: users.isEmpty
-          ? const Center(child: Text("No user registered"))
-          : ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListTile(
-              leading: const Icon(Icons.person),
-              title: Text("User ${index + 1}"),
-              subtitle: Text(users[index]),
-            ),
-          );
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirestoreServices().allUsersFromDatabase(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Text('No users found');
+          } else {
+            final docs = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final user = docs[index].data() as Map<String, dynamic>;
+                return InkWell(
+                  borderRadius: BorderRadius.circular(5),
+                  onTap: () {
+                    context.pushReplacement(AppRoutes.CHAT,extra: user['mobile']);
+                  }, // for ripple to match shap
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 4,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/splash_cht.png'),
+                        radius: 24,
+
+                      ),
+                      title: Text(user['mobile'] ?? 'Unknown'),
+                      subtitle: Text('Last Seen: ${user['lastSeen']}'),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
     );

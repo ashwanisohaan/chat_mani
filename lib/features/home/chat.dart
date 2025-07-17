@@ -2,17 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whatsapp_design/features/home/home.dart';
 import 'package:whatsapp_design/shared/ui_components.dart';
+import 'package:whatsapp_design/shared/utility.dart';
 
 import 'chat_bubble.dart';
 
-class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+class ChatPage extends StatefulWidget {
+
+  ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  String mobileNoToChat = "";
+
 
   @override
   Widget build(BuildContext context) {
+    mobileNoToChat = GoRouterState.of(context).extra as String? ?? "";
+
     return
       PopScope(
-        canPop: true, // Prevent default back behavior
+        canPop: false, // Prevent default back behavior
         onPopInvoked: (didPop) async {
           if (!didPop) {
             // Ask user before exiting
@@ -46,7 +58,7 @@ class ChatPage extends StatelessWidget {
             title: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('assets/user1.png'),
+                  backgroundImage: AssetImage('assets/images/splash_cht.png'),
                   radius: 18,
                 ),
                  SizedBox(width: 10),
@@ -145,7 +157,7 @@ class _ChatPageState extends State<ChatPage> {
           navigator.pop('/home');
         }
       },
-      
+
       child: Scaffold(
         appBar: AppBar(title: const Text("Chat")),
         body: Column(
