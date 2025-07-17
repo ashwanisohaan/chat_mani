@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../features/home/chat_bubble.dart';
 
 TextStyle mTextStyle35() {
   return TextStyle(
@@ -8,6 +7,9 @@ TextStyle mTextStyle35() {
     color: Colors.white,
     fontWeight: FontWeight.bold,
   );
+}
+TextStyle mTextStyleFrom12() {
+  return TextStyle(fontSize: 12,color: Colors.deepPurple, fontWeight: FontWeight.normal,fontStyle: FontStyle.italic);
 }
 TextStyle mTextStyle15() {
   return TextStyle(fontSize: 15,color: Colors.white, fontWeight: FontWeight.bold);
@@ -39,33 +41,6 @@ Widget commonElevatedButton({
     child: Text(text, style: TextStyle(color: textColor, fontSize: 16)),
   );
 }
-Widget chtConstraints({
- // required String txt,
-Color color = Colors.deepPurple,
-Color textColor = Colors.white,
-
-}){
-  return ListView(
-    padding:  EdgeInsets.all(10),
-    children:  [
-      Align(
-        alignment: Alignment.centerLeft,
-        child: ChatBubble(
-          message: 'Hi there!',
-          isMe: false,
-        ),
-      ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: ChatBubble(
-          message: 'Hello! How are you?',
-          isMe: true,
-        ),
-      ),
-    ],
-  );
-}
-
 
 
 

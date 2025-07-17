@@ -21,7 +21,7 @@ class _RegisteredUserPageState extends State<RegisteredUserPage> {
         backgroundColor: Colors.deepPurple,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirestoreServices().allUsersFromDatabase(),
+        stream: FirestoreServicesOperations().allUsersFromDatabase(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -37,7 +37,7 @@ class _RegisteredUserPageState extends State<RegisteredUserPage> {
                 return InkWell(
                   borderRadius: BorderRadius.circular(5),
                   onTap: () {
-                    context.pushReplacement(AppRoutes.CHAT,extra: user['mobile']);
+                    context.pushReplacement(AppRoutes.CHAT, extra:{"mobile": user['mobile']});
                   }, // for ripple to match shap
                   child: Card(
                     margin: const EdgeInsets.symmetric(

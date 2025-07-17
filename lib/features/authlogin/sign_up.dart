@@ -103,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     );
                   } else {
                    setLoading(true);
-                    bool isSaved = await FirestoreServices()
+                    bool isSaved = await FirestoreServicesOperations()
                         .saveUserIfNotExists(mobileNumber: mob);
 
                     setLoading(false);

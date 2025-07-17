@@ -67,9 +67,9 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = await auth.isLoggedIn;
 
     if (isLoggedIn) {
-      context.go(AppRoutes.HOME);
+      context.pushReplacement(AppRoutes.HOME);
     } else {
-      context.go(AppRoutes.SIGNUP);
+      context.pushReplacement(AppRoutes.SIGNUP);
     }
   }
 
@@ -89,39 +89,3 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-/*class SplashScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, auth, _) {
-        if (auth.isLoading) {
-          return Scaffold(body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(SPL,style: TextStyle(color: Colors.deepPurple, fontSize: 40),),
-              Image.asset('assets/images/splash_cht.png'),
-            ],
-          ),
-          ),
-          );
-        } else {
-          Future.microtask(() {
-            if (auth.isLoggedIn) {
-              context.pushReplacement(AppRoutes.HOME);
-
-            } else {
-              context.pushReplacement(AppRoutes.SIGNUP);
-
-            }
-          });
-
-          // While waiting for Future.microtask to complete
-          return Scaffold(
-            body: Center(child: Text("Checking login status...")),
-          );
-        }
-      },
-    );
-  }
-}
-
-*/

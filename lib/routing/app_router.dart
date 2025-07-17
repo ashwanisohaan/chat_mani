@@ -3,8 +3,8 @@ import "package:whatsapp_design/features/authlogin/sign_up.dart";
 import "package:whatsapp_design/features/authlogin/welcome.dart";
 import "package:whatsapp_design/features/home/home.dart";
 
-import "../features/home/chat.dart";
-import "../features/home/rigstered_data.dart";
+import "../features/chats/chat.dart";
+import "../features/registeredusers/rigstered_data.dart";
 import "../main.dart";
 
 abstract class AppRoutes {
